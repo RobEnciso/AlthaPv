@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altha Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        :root { font-family: 'Inter', sans-serif; }
+        .dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+        .drag-over {
+            border-style: dashed;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .new-idea {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="h-full">
+    <div class="h-full flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-3">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#1E293B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="#1E293B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#1E293B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="font-semibold text-slate-800">Altha</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-slate-500">
+                    <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0c-1.67-.253-3.287-.673-4.83-1.243a.75.75 0 01-.298-1.205A8.217 8.217 0 004.5 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0L9.752 17.9z" clip-rule="evenodd" />
+                  </svg>
+                <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?q=80&w=256&h=256" alt="User Avatar">
+            </div>
+        </header>
+
+        <div class="flex-grow flex overflow-hidden">
+            <!-- Sidebar -->
+            <aside class="w-16 bg-white border-r border-slate-200 flex flex-col items-center py-4 space-y-4">
+                <button class="p-2 rounded-lg bg-slate-100 text-slate-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" /></svg>
+                </button>
+                <button class="p-2 rounded-lg text-slate-500 hover:bg-slate-100"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v12a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zM5.25 6.75c-.621 0-1.125.504-1.125 1.125v12.75c0 .621.504 1.125 1.125 1.125h13.5c.621 0 1.125-.504 1.125-1.125V7.875c0-.621-.504-1.125-1.125-1.125H5.25z" clip-rule="evenodd" /></svg></button>
+                <button class="p-2 rounded-lg text-slate-500 hover:bg-slate-100"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" /></svg></button>
+                <button class="p-2 rounded-lg text-slate-500 hover:bg-slate-100"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.542L6.36 15.878A.75.75 0 007.1 17.19l4.66-1.748a.75.75 0 00.447-.447l3.255-8.706a1.875 1.875 0 00-1.542-1.85H11.078zM12 18a.75.75 0 00.75.75h.008a.75.75 0 00.75-.75v-.008a.75.75 0 00-.75-.75h-.008a.75.75 0 00-.75.75v.008z" clip-rule="evenodd" /><path d="M10.289 3.424A9.75 9.75 0 0121.75 12c0 5.385-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12a9.75 9.75 0 017.38-9.452.75.75 0 01.658.658z" clip-rule="evenodd" /></svg></button>
+            </aside>
+
+            <!-- Main Content -->
+            <main id="inbox-column" class="flex-1 bg-slate-100 overflow-y-auto p-4 space-y-4">
+                <h2 class="text-xl font-bold text-slate-800 mb-4">Inbox</h2>
+                <!-- Idea cards will be rendered here by JavaScript -->
+            </main>
+
+            <!-- Right Column -->
+            <aside class="w-[420px] bg-white border-l border-slate-200 p-4 flex flex-col">
+                <div id="calendar-header" class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-slate-800">October 2025</h2>
+                    <!-- Navigation can be added here -->
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-1 flex-grow">
+                    <!-- Calendar will be rendered here by JavaScript -->
+                </div>
+            </aside>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- DATA SIMULATION ---
+    let ideas = [
+        { id: 1, idea_titulo: "Cómo la IA está cambiando el marketing de contenidos", tipo_formato: "Carrusel", fuente: "Blog Interno", copy_sugerido: "Un análisis profundo sobre las nuevas herramientas de IA y su impacto.", estado: 'Borrador', fecha_publicacion: null },
+        { id: 2, idea_titulo: "5 Estrategias de SEO para SaaS B2B", tipo_formato: "Post", fuente: "Competencia", copy_sugerido: "Descubre 5 tácticas de SEO probadas para aumentar la visibilidad de tu SaaS.", estado: 'Borrador', fecha_publicacion: null },
+        { id: 3, idea_titulo: "Tutorial: Integración con la API de Altha", tipo_formato: "Reel", fuente: "Equipo de Producto", copy_sugerido: "Un video corto mostrando lo fácil que es integrar nuestra API.", estado: 'Borrador', fecha_publicacion: null },
+        { id: 4, idea_titulo: "Caso de Éxito: Cliente XYZ", tipo_formato: "Post", fuente: "Ventas", copy_sugerido: "Cómo el Cliente XYZ aumentó su ROI en un 200% usando Altha.", estado: 'Aprobado', fecha_publicacion: '2025-10-15' },
+        { id: 5, idea_titulo: "Q4 Roadmap y Nuevas Funcionalidades", tipo_formato: "Carrusel", fuente: "Equipo de Producto", copy_sugerido: "Un vistazo a lo que viene en el último trimestre del año.", estado: 'Publicado', fecha_publicacion: '2025-10-08' },
+        { id: 6, idea_titulo: "Webinar: El Futuro del Contenido", tipo_formato: "Post", fuente: "Marketing", copy_sugerido: "Anuncio de nuestro próximo webinar con expertos de la industria.", estado: 'Aprobado', fecha_publicacion: '2025-10-22' }
+    ];
+
+    // --- DOM REFERENCES ---
+    const inboxColumn = document.getElementById('inbox-column');
+    const calendarGrid = document.getElementById('calendar-grid');
+
+    // --- STATE & CONFIG ---
+    const formatColors = { "Carrusel": "blue", "Post": "green", "Reel": "purple" };
+    const stateColors = { "Borrador": "slate", "Aprobado": "blue", "Publicado": "green" };
+
+    // --- RENDER FUNCTIONS ---
+    function renderAll() {
+        renderInbox();
+        renderCalendar();
+    }
+
+    function renderInbox() {
+        // Clear existing inbox cards
+        inboxColumn.querySelectorAll('.idea-card').forEach(card => card.remove());
+
+        const draftIdeas = ideas.filter(idea => idea.estado === 'Borrador');
+
+        draftIdeas.forEach(idea => {
+            const card = createIdeaCardElement(idea);
+            inboxColumn.appendChild(card);
+        });
+    }
+
+    function renderCalendar() {
+        calendarGrid.innerHTML = ''; // Clear calendar
+
+        // Add day labels
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        days.forEach(day => {
+            const dayLabel = document.createElement('div');
+            dayLabel.className = 'text-center text-xs font-medium text-slate-500';
+            dayLabel.textContent = day;
+            calendarGrid.appendChild(dayLabel);
+        });
+
+        // Simple logic for October 2025 (starts on a Wednesday)
+        const firstDayOffset = 3;
+        const daysInMonth = 31;
+
+        for (let i = 0; i < firstDayOffset; i++) {
+            const emptyCell = document.createElement('div');
+            calendarGrid.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `2025-10-${String(day).padStart(2, '0')}`;
+            const dayCell = document.createElement('div');
+            dayCell.className = 'border border-slate-200 rounded-md p-1.5 h-24 flex flex-col';
+            dayCell.dataset.date = dateStr;
+
+            const dayNumber = document.createElement('span');
+            dayNumber.className = 'text-xs font-semibold text-slate-700';
+            dayNumber.textContent = day;
+            dayCell.appendChild(dayNumber);
+
+            const ideasContainer = document.createElement('div');
+            ideasContainer.className = 'mt-1 space-y-1 overflow-y-auto';
+
+            const ideasForDay = ideas.filter(idea => idea.fecha_publicacion === dateStr);
+            ideasForDay.forEach(idea => {
+                const compactCard = createCompactCardElement(idea);
+                ideasContainer.appendChild(compactCard);
+            });
+
+            dayCell.appendChild(ideasContainer);
+            calendarGrid.appendChild(dayCell);
+        }
+    }
+
+    // --- ELEMENT CREATION ---
+    function createIdeaCardElement(idea) {
+        const card = document.createElement('div');
+        card.id = `idea-${idea.id}`;
+        card.className = 'idea-card bg-white p-4 rounded-lg border border-slate-200 shadow-sm space-y-3 cursor-grab active:cursor-grabbing';
+        card.draggable = true;
+
+        const stateColor = stateColors[idea.estado] || 'slate';
+        const formatColor = formatColors[idea.tipo_formato] || 'slate';
+
+        card.innerHTML = `
+            <div class="flex justify-between items-start">
+                <h3 class="font-semibold text-slate-800 pr-2">${idea.idea_titulo}</h3>
+                <span class="text-xs font-medium bg-${stateColor}-200 text-${stateColor}-600 px-2 py-1 rounded-full flex-shrink-0">${idea.estado}</span>
+            </div>
+            <p class="text-sm text-slate-500">${idea.copy_sugerido}</p>
+            <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-400">${idea.fuente}</span>
+                <span class="text-xs font-medium bg-${formatColor}-100 text-${formatColor}-600 px-2 py-1 rounded-full">${idea.tipo_formato}</span>
+            </div>
+        `;
+        return card;
+    }
+
+    function createCompactCardElement(idea) {
+        const card = document.createElement('div');
+        const stateColor = stateColors[idea.estado] || 'slate';
+        card.className = `p-1 rounded text-xs font-medium bg-${stateColor}-100 text-${stateColor}-700 truncate`;
+        card.textContent = idea.idea_titulo;
+        return card;
+    }
+
+    // --- DRAG & DROP LOGIC ---
+    // Listen for drag start on the parent container
+    inboxColumn.addEventListener('dragstart', (e) => {
+        if (e.target.classList.contains('idea-card')) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', e.target.id);
+            e.dataTransfer.effectAllowed = 'move';
+        }
+    });
+
+    // Cleanup style after drag ends
+    inboxColumn.addEventListener('dragend', (e) => {
+        if (e.target.classList.contains('idea-card')) {
+            e.target.classList.remove('dragging');
+        }
+    });
+
+    // Listen on the calendar grid for drop events
+    calendarGrid.addEventListener('dragover', (e) => {
+        e.preventDefault(); // Necessary to allow dropping
+        const dayCell = e.target.closest('[data-date]');
+        if (dayCell) {
+            dayCell.classList.add('drag-over');
+        }
+    });
+
+    calendarGrid.addEventListener('dragleave', (e) => {
+        const dayCell = e.target.closest('[data-date]');
+        if (dayCell) {
+            dayCell.classList.remove('drag-over');
+        }
+    });
+
+    calendarGrid.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const dayCell = e.target.closest('[data-date]');
+        if (dayCell) {
+            dayCell.classList.remove('drag-over');
+            const ideaId = e.dataTransfer.getData('text/plain').split('-')[1];
+            const newDate = dayCell.dataset.date;
+
+            // Update the data in memory (simulating backend update)
+            const ideaToUpdate = ideas.find(idea => idea.id == ideaId);
+            if (ideaToUpdate) {
+                ideaToUpdate.estado = 'Aprobado';
+                ideaToUpdate.fecha_publicacion = newDate;
+
+                // Re-render UI to simulate realtime update
+                renderAll();
+            }
+        }
+    });
+
+    // --- "REALTIME" SIMULATION ---
+    function simulateNewIdea() {
+        const newIdea = {
+            id: ideas.length + 1,
+            idea_titulo: "Nueva idea generada por IA",
+            tipo_formato: ["Post", "Reel"][Math.floor(Math.random()*2)],
+            fuente: "Motor de IA",
+            copy_sugerido: "Este es un borrador de una nueva idea de contenido para explorar.",
+            estado: 'Borrador',
+            fecha_publicacion: null
+        };
+        ideas.unshift(newIdea); // Add to the beginning of the array
+
+        // Re-render inbox with animation for the new card
+        const draftIdeas = ideas.filter(idea => idea.estado === 'Borrador');
+        inboxColumn.querySelectorAll('.idea-card').forEach(card => card.remove());
+
+        draftIdeas.forEach((idea, index) => {
+            const card = createIdeaCardElement(idea);
+            if (index === 0) {
+                card.classList.add('new-idea');
+            }
+            inboxColumn.appendChild(card);
+        });
+    }
+
+    setInterval(simulateNewIdea, 5000); // Add a new idea every 5 seconds
+
+    // --- INITIAL RENDER ---
+    renderAll();
+});
+</script>
+</body>
+</html>
